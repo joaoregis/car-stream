@@ -6,14 +6,10 @@ import android.content.Context
 // nesses casos considera-se logado ao fechar a tela do site.
 data class Provider(val id: String, val name: String, val url: String, val detects: Boolean = true)
 
-// Só o HBO Max foi testado no WebView; os outros dependem do DRM de cada serviço.
+// Só provedores já testados no WebView. Para adicionar um: uma linha aqui.
 val PROVIDERS = listOf(
     Provider("hbomax", "HBO Max", "https://www.hbomax.com/auth/login"),
-    Provider("netflix", "Netflix", "https://www.netflix.com/login"),
     Provider("disney", "Disney+", "https://www.disneyplus.com/login"),
-    Provider("prime", "Prime Video", "https://www.primevideo.com", false),
-    Provider("youtube", "YouTube", "https://www.youtube.com", false),
-    Provider("globoplay", "Globoplay", "https://globoplay.globo.com", false),
 )
 
 // Provedor escolhido para o carro. SharedPreferences: o serviço do Android Auto pode rodar em outro processo/instante.
