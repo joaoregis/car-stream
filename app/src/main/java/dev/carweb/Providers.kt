@@ -24,3 +24,7 @@ fun setLogged(c: Context, p: Provider, v: Boolean) = prefs(c).edit().putBoolean(
 
 // Comandos do celular para a página do carro. A marca de tempo faz cada toque ser uma mudança nova.
 fun carCommand(c: Context, cmd: String) = prefs(c).edit().putString("cmd", cmd + ":" + System.nanoTime()).apply()
+
+// Texto digitado no celular, espelhado no campo de busca do site no carro. A marca de tempo garante a notificação
+// mesmo se o texto se repetir. Formato: marca de tempo, quebra de linha, texto.
+fun carType(c: Context, text: String) = prefs(c).edit().putString("typed", "${System.nanoTime()}\n$text").apply()

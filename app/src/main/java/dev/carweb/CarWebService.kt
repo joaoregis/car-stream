@@ -35,6 +35,7 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
     private var web: WebView? = null
     private var pres: Presentation? = null
     private var focus: AudioFocusRequest? = null
+    private var resumeMusic = false                 // havia música tocando quando o CarWeb abriu
     private var sw = 0; private var sh = 0          // tamanho total da Surface
     private var area: Rect? = null                  // parte da Surface realmente visível (sem cartões do Android Auto)
 
@@ -53,6 +54,7 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
     // (Spotify, YouTube Music...). O foco sozinho nem todo app respeita, por isso os dois.
     private fun pauseOtherMedia() {
         val am = carContext.getSystemService(AudioManager::class.java)
+        resumeMusic = am.isMusicActive
         focus = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
             .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MOVIE).build())
@@ -68,6 +70,14 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
             "cmd" -> when (p.getString("cmd", "")?.substringBefore(':')) {
                 "back" -> web?.goBack()
                 "reload" -> web?.reload()
+                "enter" -> web?.let { w ->
+                    w.requestFocus()
+                    for (a in intArrayOf(KeyEvent.ACTION_DOWN, KeyEvent.ACTION_UP)) w.dispatchKeyEvent(KeyEvent(a, KeyEvent.KEYCODE_ENTER))
+                }
+            }
+            "typed" -> web?.let { w ->
+                w.requestFocus()
+                w.evaluateJavascript(TYPE_JS + "(" + org.json.JSONObject.quote(p.getString("typed", "")!!.substringAfter('\n')) + ")", null)
             }
         }
     }
@@ -102,8 +112,13 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
     }
 
     override fun onSurfaceDestroyed(c: SurfaceContainer) {
-        focus?.let { carContext.getSystemService(AudioManager::class.java).abandonAudioFocusRequest(it) }; focus = null
         pres?.dismiss(); web?.destroy(); vd?.release(); pres = null; web = null; vd = null
+        val am = carContext.getSystemService(AudioManager::class.java)
+        focus?.let { am.abandonAudioFocusRequest(it) }; focus = null
+        // Só retoma se havia música antes; com o vídeo já destruído, o "play" vai para o app de música.
+        if (resumeMusic) for (a in intArrayOf(KeyEvent.ACTION_DOWN, KeyEvent.ACTION_UP))
+            am.dispatchMediaKeyEvent(KeyEvent(a, KeyEvent.KEYCODE_MEDIA_PLAY))
+        resumeMusic = false
     }
 
     override fun onStableAreaChanged(r: Rect) { area = Rect(r); fit() }
@@ -119,3 +134,16 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
 
     override fun onScroll(dx: Float, dy: Float) { web?.scrollBy(dx.toInt(), dy.toInt()) }
 }
+
+// Espelha o texto do celular no campo de texto focado do site (ou no primeiro campo de busca/texto da página).
+// execCommand("insertText") simula digitação real: dispara os eventos de input que sites em React/Vue escutam.
+private const val TYPE_JS = """(function(t){
+  var e = document.activeElement;
+  var ok = function(x){ return x && (x.isContentEditable || x.tagName == 'TEXTAREA' ||
+    (x.tagName == 'INPUT' && /^(search|text|)$/.test(x.type || ''))); };
+  if (!ok(e)) { e = document.querySelector('input[type=search],input[type=text],input:not([type]),textarea'); if (e) e.focus(); }
+  if (!ok(e)) return 'sem-campo';
+  if (e.select) e.select(); else document.execCommand('selectAll');
+  if (t) document.execCommand('insertText', false, t); else document.execCommand('delete');
+  return 'ok';
+})"""

@@ -19,7 +19,11 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT as MATCH
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT as WRAP
 import android.view.WindowInsets
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams as LP
@@ -87,6 +91,9 @@ class MainActivity : Activity() {
             val s = if (Build.VERSION.SDK_INT >= 30)
                 i.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout()).let { intArrayOf(it.left, it.top, it.right, it.bottom) }
             else @Suppress("DEPRECATION") intArrayOf(i.systemWindowInsetLeft, i.systemWindowInsetTop, i.systemWindowInsetRight, i.systemWindowInsetBottom)
+            // Com o teclado aberto, o recuo de baixo passa a ser a altura dele: o painel sobe junto (edge-to-edge
+            // não redimensiona sozinho).
+            if (Build.VERSION.SDK_INT >= 30) s[3] = maxOf(s[3], i.getInsets(WindowInsets.Type.ime()).bottom)
             v.setPadding(s[0], s[1], s[2], if (land) s[3] else 0)
             dock.setPadding(20.dp, 18.dp, 20.dp, 20.dp + if (land) 0 else s[3])
             i
@@ -174,10 +181,32 @@ class MainActivity : Activity() {
         dock.addView(label("No carro"))
         dock.addView(text(now?.name ?: "Nada enviado", 24f, c(if (now != null) R.color.text else R.color.text_muted), true))
         if (now == null) dock.addView(text("Entre em um provedor e toque em Enviar ao carro.", 14f, c(R.color.text_muted)))
+        (typer.parent as? ViewGroup)?.removeView(typer)
+        typer.isEnabled = now != null; typer.alpha = if (now != null) 1f else 0.38f
+        dock.addView(typer, LP(MATCH, 56.dp).apply { topMargin = 14.dp })
         dock.addView(LinearLayout(this).apply {
             addView(remote("Voltar", R.drawable.ic_back, "back", now != null), LP(0, 60.dp, 1f))
             addView(remote("Recarregar", R.drawable.ic_reload, "reload", now != null), LP(0, 60.dp, 1f).apply { marginStart = 12.dp })
         }, LP(MATCH, WRAP).apply { topMargin = 14.dp })
+    }
+
+    // Teclado do carro: o que se digita aqui aparece no campo focado do site no carro (toque na busca do site,
+    // no carro, antes). Espelha o campo inteiro a cada pausa curta na digitação; "Buscar" do teclado envia Enter.
+    // Criado uma vez e reaproveitado, para não perder o texto nem o foco a cada render().
+    private val typer: EditText by lazy {
+        val send = Runnable { carType(this, typer.text.toString()) }
+        EditText(this).apply {
+            hint = "Digitar no carro (ex.: busca)"; textSize = 16f; isSingleLine = true
+            setTextColor(c(R.color.text)); setHintTextColor(c(R.color.text_muted))
+            imeOptions = EditorInfo.IME_ACTION_SEARCH
+            setPadding(16.dp, 0, 16.dp, 0); background = shape(c(R.color.surface_high), 18)
+            addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(t: CharSequence?, a: Int, b: Int, n: Int) {}
+                override fun onTextChanged(t: CharSequence?, a: Int, b: Int, n: Int) {}
+                override fun afterTextChanged(e: Editable?) { removeCallbacks(send); postDelayed(send, 250) }
+            })
+            setOnEditorActionListener { _, _, _ -> removeCallbacks(send); send.run(); carCommand(context, "enter"); true }
+        }
     }
 
     // Botão do controle remoto: ícone + rótulo centralizados, alvo de 60dp.
