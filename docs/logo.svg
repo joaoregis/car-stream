@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" role="img" aria-label="CarWeb">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC24A"/><stop offset="1" stop-color="#FF9A0A"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="144" height="144" rx="36" fill="url(#g)"/>
+  <!-- mesma geometria do ícone do app (viewport 108, zona segura 21..87), ampliada -->
+  <g transform="translate(8 8) scale(2.18) translate(-21 -21)" fill="none" stroke="#0B0F14" stroke-width="6">
+    <rect x="27" y="32" width="54" height="36" rx="8" stroke-linejoin="round"/>
+    <path d="M49 42.5v15a1.5 1.5 0 0 0 2.3 1.3l12-7.5a1.5 1.5 0 0 0 0-2.6l-12-7.5a1.5 1.5 0 0 0-2.3 1.3z" fill="#0B0F14" stroke="none"/>
+    <path d="M31 80q23-8 46 0" stroke-linecap="round"/>
+  </g>
+  <text x="180" y="103" font-family="system-ui, 'Segoe UI', Roboto, sans-serif" font-size="68" font-weight="700" letter-spacing="-1" fill="#8F5400">Car<tspan fill="#5C6773" font-weight="500">Web</tspan></text>
+</svg>

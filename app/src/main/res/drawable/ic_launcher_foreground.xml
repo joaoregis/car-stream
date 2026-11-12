@@ -1,0 +1,11 @@
+<!-- Símbolo do CarWeb: a tela do carro (retângulo) sobre o arco do painel, com o "play" do streaming.
+     Tudo dentro da zona segura do ícone adaptativo (66dp centrais de 108dp). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:pathData="M35,32h38a8,8 0,0 1,8 8v20a8,8 0,0 1,-8 8h-38a8,8 0,0 1,-8 -8v-20a8,8 0,0 1,8 -8z"
+        android:strokeColor="#0B0F14" android:strokeWidth="6" android:strokeLineJoin="round"/>
+    <path android:pathData="M49,42.5v15a1.5,1.5 0,0 0,2.3 1.3l12,-7.5a1.5,1.5 0,0 0,0 -2.6l-12,-7.5a1.5,1.5 0,0 0,-2.3 1.3z"
+        android:fillColor="#0B0F14"/>
+    <path android:pathData="M31,80q23,-8 46,0"
+        android:strokeColor="#0B0F14" android:strokeWidth="6" android:strokeLineCap="round"/>
+</vector>

@@ -1,0 +1,14 @@
+<resources>
+    <!-- Claro: papel quente. O âmbar é a "luz de painel" da marca, igual nos dois temas. -->
+    <color name="bg">#F3F0E9</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_high">#EBE6DA</color>
+    <color name="outline">#DAD4C6</color>
+    <color name="text">#14181D</color>
+    <color name="text_muted">#5C6773</color>
+    <color name="accent">#FFB020</color>
+    <color name="on_accent">#14181D</color>
+    <color name="accent_text">#8F5400</color>
+    <color name="warn">#B3261E</color>
+    <color name="ripple">#22000000</color>
+</resources>

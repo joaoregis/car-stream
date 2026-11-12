@@ -1,0 +1,12 @@
+<resources>
+    <!-- Escuro: painel do carro à noite. -->
+    <color name="bg">#0B0F14</color>
+    <color name="surface">#141A22</color>
+    <color name="surface_high">#1F2733</color>
+    <color name="outline">#2A3441</color>
+    <color name="text">#E9EEF3</color>
+    <color name="text_muted">#8E9BAA</color>
+    <color name="accent_text">#FFB020</color>
+    <color name="warn">#FFB4A9</color>
+    <color name="ripple">#33FFFFFF</color>
+</resources>
