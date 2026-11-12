@@ -1,31 +1,35 @@
 package dev.carweb
 
 import android.app.Activity
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
-import android.view.WindowInsets
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.Toast
 
-// Tela do celular: serve para fazer login (cookies são compartilhados com a tela do carro).
+// Home provisória (sem design): UI/UX final será feita à parte.
+// Por provedor: "Entrar" abre o site no celular (login); "Enviar ao carro" define o que o carro mostra.
 class MainActivity : Activity() {
     override fun onCreate(b: Bundle?) {
         super.onCreate(b)
-        val web = newWebView(this)
-        // targetSdk 35 desenha sob as barras do sistema; sem este recuo os controles do player ficam escondidos.
-        web.setOnApplyWindowInsetsListener { v, i ->
-            if (Build.VERSION.SDK_INT >= 30) {
-                val s = i.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
-                v.setPadding(s.left, s.top, s.right, s.bottom)
-            } else {
-                @Suppress("DEPRECATION")
-                v.setPadding(i.systemWindowInsetLeft, i.systemWindowInsetTop, i.systemWindowInsetRight, i.systemWindowInsetBottom)
-            }
-            i
+        val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(32, 96, 32, 32) }
+        PROVIDERS.forEach { p ->
+            col.addView(TextView(this).apply { text = p.name; textSize = 20f })
+            col.addView(LinearLayout(this).apply {
+                addView(Button(context).apply {
+                    text = "Entrar (celular)"
+                    setOnClickListener { startActivity(Intent(context, BrowserActivity::class.java).putExtra("url", p.url)) }
+                }, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
+                addView(Button(context).apply {
+                    text = "Enviar ao carro"
+                    setOnClickListener { select(context, p); Toast.makeText(context, "${p.name} → carro", Toast.LENGTH_SHORT).show() }
+                }, LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
+            })
         }
-        setContentView(web)
-        // Tela cheia: esconde status/navegação (voltam com um deslize na borda).
-        if (Build.VERSION.SDK_INT >= 30) window.insetsController?.apply {
-            hide(WindowInsets.Type.systemBars())
-            systemBarsBehavior = android.view.WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+        setContentView(ScrollView(this).apply { addView(col, MATCH_PARENT, WRAP_CONTENT) })
     }
 }

@@ -26,8 +26,14 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
     private var web: WebView? = null
     private var pres: Presentation? = null
 
+    // Trocou o provedor no celular -> o carro carrega o novo site.
+    private val onSelect = android.content.SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
+        web?.loadUrl(selected(carContext).url)
+    }
+
     init {
         c.getCarService(AppManager::class.java).setSurfaceCallback(this)
+        prefs(c).registerOnSharedPreferenceChangeListener(onSelect)
     }
 
     override fun onGetTemplate(): Template = NavigationTemplate.Builder()
@@ -43,7 +49,7 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
             "carweb", c.width, c.height, c.dpi, s,
             DisplayManager.VIRTUAL_DISPLAY_FLAG_OWN_CONTENT_ONLY or DisplayManager.VIRTUAL_DISPLAY_FLAG_PRESENTATION)
         pres = Presentation(carContext, vd!!.display).also {
-            web = newWebView(it.context); it.setContentView(web!!); it.show()
+            web = newWebView(it.context, selected(carContext).url); it.setContentView(web!!); it.show()
         }
     }
 

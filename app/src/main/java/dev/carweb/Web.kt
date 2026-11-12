@@ -8,12 +8,11 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
-const val URL = "https://www.hbomax.com/auth/login"
 // UA de desktop: sites de streaming costumam recusar WebView mobile.
 const val UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 
 @SuppressLint("SetJavaScriptEnabled")
-fun newWebView(c: Context) = WebView(c).apply {
+fun newWebView(c: Context, url: String) = WebView(c).apply {
     settings.javaScriptEnabled = true
     settings.domStorageEnabled = true
     settings.mediaPlaybackRequiresUserGesture = false
@@ -31,5 +30,5 @@ fun newWebView(c: Context) = WebView(c).apply {
             if (ok.isNotEmpty()) r.grant(ok.toTypedArray()) else r.deny()
         }
     }
-    loadUrl(URL)
+    loadUrl(url)
 }
