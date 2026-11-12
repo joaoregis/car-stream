@@ -14,7 +14,7 @@
         </activity>
         <activity android:name=".BrowserActivity" android:exported="false"
             android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
-            android:screenOrientation="sensorLandscape"
+            android:screenOrientation="fullUser"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <service android:name=".CarWebService" android:exported="true">
             <intent-filter>
