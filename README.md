@@ -33,7 +33,7 @@ principal; no PC, `adb forward tcp:5277 tcp:5277` e rode o `desktop-head-unit`.
 
 ## Estado
 
-Esqueleto escrito; ainda não compilado nem testado. Veja o `CLAUDE.md` para os marcos.
+Compila (`assembleDebug` OK); ainda não testado em aparelho. Veja o `CLAUDE.md` para os marcos.
 
 ## Licença
 

@@ -1,0 +1,56 @@
+{
+  "app/build.gradle.kts": {
+    "mtime": 1794508164.531629,
+    "seen": 1794508523.8943853,
+    "ast_hash": "6371cdf64af66a8bf2cf8de66bd145a7",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/dev/carweb/CarWebService.kt": {
+    "mtime": 1794508164.5391605,
+    "seen": 1794508523.8943906,
+    "ast_hash": "0a1d6e8d606a49a14aab98352e2b5631",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/dev/carweb/MainActivity.kt": {
+    "mtime": 1794508164.5423126,
+    "seen": 1794508523.8943932,
+    "ast_hash": "8eec2537995c0910bf88b2b1f9f85009",
+    "semantic_hash": ""
+  },
+  "app/src/main/java/dev/carweb/Web.kt": {
+    "mtime": 1794508164.5443573,
+    "seen": 1794508523.8943946,
+    "ast_hash": "9e7c913741e5c4e038c2e1f3f483a1ed",
+    "semantic_hash": ""
+  },
+  "build.gradle.kts": {
+    "mtime": 1794508164.5273905,
+    "seen": 1794508523.8943956,
+    "ast_hash": "435c2552f106754fa755f59dcde713d4",
+    "semantic_hash": ""
+  },
+  "settings.gradle.kts": {
+    "mtime": 1794508164.529502,
+    "seen": 1794508523.8943968,
+    "ast_hash": "b170ee8c8ac67b54011b9504afdf34a5",
+    "semantic_hash": ""
+  },
+  "CLAUDE.md": {
+    "mtime": 1794508332.3499794,
+    "seen": 1794508523.8943982,
+    "ast_hash": "e374f4d17a398462b91533cb2f5f9573",
+    "semantic_hash": ""
+  },
+  "GRAPHIFY.md": {
+    "mtime": 1794496845.3708985,
+    "seen": 1794508523.894399,
+    "ast_hash": "37b3211ad681a8d807eb71ed51759bc6",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1794508521.7185168,
+    "seen": 1794508523.8944,
+    "ast_hash": "f48b1cf19f7fceee18c9ad9100d3870a",
+    "semantic_hash": ""
+  }
+}

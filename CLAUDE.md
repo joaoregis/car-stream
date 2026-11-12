@@ -18,5 +18,5 @@ App Android pessoal, só para sideload (nunca Play Store): mostra um site de str
 - **Fora de escopo:** burlar DRM (tela preta em captura do app oficial), publicar na Play Store.
 - **Build/instalação:** `gradlew installDebug`; celular por adb wireless (`adb pair` + `adb connect`).
 - **Marcos (parar se falhar):** 1) sync do Gradle; 2) app instala; 3) Max toca no WebView do celular (se não tocar, abordagem inviável); 4) app aparece no Android Auto/DHU; 5) vídeo na tela do carro (usuário testa); 6) bloqueio em movimento, botões, URL configurável.
-- **Estado:** esqueleto escrito, nada compilado/testado. Sem Android SDK na máquina ainda (só adb).
+- **Estado:** compila (APK debug gerado). SDK, JDK 17 e DHU em E:Android. Falta: instalar no celular e testar Max no WebView. Gradle precisa de `org.gradle.java.home` apontando ao JDK 17 em `$GRADLE_USER_HOME/gradle.properties` (local, não versionado).
 - **Regras de trabalho:** mudanças mínimas, sem abstrações extras; vídeo só com o carro parado.
