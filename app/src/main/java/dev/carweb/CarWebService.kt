@@ -73,7 +73,10 @@ class WebScreen(c: CarContext) : Screen(c), SurfaceCallback {
     }
 
     init {
-        c.getCarService(AppManager::class.java).setSurfaceCallback(this)
+        // Visto no log: se o Android Auto derruba a conexão enquanto a tela é criada (ex.: trocar de app),
+        // esta chamada lança "car host invalidated" e derruba o app inteiro. O host recria a sessão depois.
+        try { c.getCarService(AppManager::class.java).setSurfaceCallback(this) }
+        catch (e: RuntimeException) { android.util.Log.w("CarWeb", "host indisponível ao criar a tela", e) }
         prefs(c).registerOnSharedPreferenceChangeListener(onSelect)
     }
 
