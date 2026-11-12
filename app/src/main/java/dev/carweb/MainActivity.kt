@@ -29,6 +29,13 @@ class MainActivity : Activity() {
 
     private fun render() {
         col.removeAllViews()
+        // Controle remoto provisório da página que está no carro (a tela do carro não tem botões).
+        col.addView(LinearLayout(this).apply {
+            addView(Button(context).apply { text = "◀ Voltar no carro"; setOnClickListener { carCommand(context, "back") } },
+                LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
+            addView(Button(context).apply { text = "⟳ Recarregar no carro"; setOnClickListener { carCommand(context, "reload") } },
+                LinearLayout.LayoutParams(0, WRAP_CONTENT, 1f))
+        })
         val now = selected(this)
         PROVIDERS.forEach { p ->
             val ok = loggedIn(this, p)

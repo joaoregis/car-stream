@@ -21,3 +21,6 @@ fun select(c: Context, p: Provider) = prefs(c).edit().putString("provider", p.id
 // "Logado" = marcado quando o login termina na tela do celular. Não valida expiração: se a sessão cair, use "Refazer login".
 fun loggedIn(c: Context, p: Provider) = prefs(c).getBoolean("logged." + p.id, false)
 fun setLogged(c: Context, p: Provider, v: Boolean) = prefs(c).edit().putBoolean("logged." + p.id, v).apply()
+
+// Comandos do celular para a página do carro. A marca de tempo faz cada toque ser uma mudança nova.
+fun carCommand(c: Context, cmd: String) = prefs(c).edit().putString("cmd", cmd + ":" + System.nanoTime()).apply()
